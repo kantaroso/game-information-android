@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GameInformationAndroid</string>
+    <string name="service_title">えろげまとめ</string>
+    <!-- 共通 -->
+    <string name="action_back">戻る</string>
+
+    <!-- ページタイトル -->
+    <string name="page_title_top">トップページ</string>
+    <string name="page_title_maker_list">メーカー一覧</string>
+
+    <!-- メーカーリスト -->
+    <string name="maker_list_not_found">メーカーが見つかりません</string>
+</resources>
