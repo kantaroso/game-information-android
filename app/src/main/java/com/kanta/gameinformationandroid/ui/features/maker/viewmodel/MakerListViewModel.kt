@@ -4,6 +4,8 @@ import android.util.Log // Logをインポート
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kanta.gameinformationandroid.data.model.Maker
+import com.kanta.gameinformationandroid.data.model.MakerDetail
+import com.kanta.gameinformationandroid.data.model.MakerVideo
 // MakerApiService の代わりに IMakerRepository をインポート
 import com.kanta.gameinformationandroid.data.repository.IMakerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,14 +74,38 @@ private class PreviewMakerRepository : IMakerRepository {
     override fun getMakers(): Flow<Result<List<Maker>>> = kotlinx.coroutines.flow.flowOf(
         Result.success(
             listOf(
-                Maker(code = "prev_1", name = "プレビューメーカー１（株） (Repo)"),
-                Maker(code = "prev_2", name = "株式会社プレビューカンパニー (Repo)"),
-                Maker(code = "prev_3", name = "プレビューゲームズ (Repo)"),
-                Maker(code = "prev_4", name = "サンプルソフト (Repo)"),
-                Maker(code = "prev_5", name = "スタジオプレビュー (Repo)")
+                Maker(code = "prev_1", name = "プレビューメーカー１（株）"),
+                Maker(code = "prev_2", name = "株式会社プレビューカンパニー"),
+                Maker(code = "prev_3", name = "プレビューゲームズ"),
+                Maker(code = "prev_4", name = "サンプルソフト"),
+                Maker(code = "prev_5", name = "スタジオプレビュー")
             )
         )
     )
+
+    override fun getMakerDetail(makerCode: String): Flow<Result<MakerDetail>> {
+        return kotlinx.coroutines.flow.flowOf(
+            Result.success(
+                MakerDetail(
+                    code = makerCode,
+                    name = "プレビュー詳細",
+                    ohp = "http://3rdeye.jp",
+                    twitterScreenName = "3rdEye_tubuyaki",
+                )
+            )
+        )
+    }
+
+    override fun getMakerVideos(makerCode: String): Flow<Result<List<MakerVideo>>> {
+        return kotlinx.coroutines.flow.flowOf(
+            Result.success(
+                listOf(
+                    MakerVideo(id = "r_7YDTEbAcg", title = "(仮)3rdEye 5th『レイルロアの略奪者』公式2ndOPMovie"),
+                    MakerVideo(id = "P2G7zzggE-o", title = "(仮)3rdEye 5th『レイルロアの略奪者』公式1stOPMovie"),
+                )
+            )
+        )
+    }
 }
 
 // 通常のプレビュー用ViewModel
@@ -127,6 +153,14 @@ class PreviewEmptyMakerListViewModel : MakerListViewModel(
         override fun getMakers(): Flow<Result<List<Maker>>> = kotlinx.coroutines.flow.flowOf(
             Result.success(emptyList())
         )
+
+        override fun getMakerDetail(makerCode: String): Flow<Result<MakerDetail>> {
+            return kotlinx.coroutines.flow.flowOf(Result.failure(NotImplementedError()))
+        }
+
+        override fun getMakerVideos(makerCode: String): Flow<Result<List<MakerVideo>>> {
+            return kotlinx.coroutines.flow.flowOf(Result.failure(NotImplementedError()))
+        }
     }
 )
 
@@ -136,5 +170,13 @@ class PreviewErrorMakerListViewModel : MakerListViewModel(
         override fun getMakers(): Flow<Result<List<Maker>>> = kotlinx.coroutines.flow.flowOf(
             Result.failure(Exception("ネットワークエラーが発生しました"))
         )
+
+        override fun getMakerDetail(makerCode: String): Flow<Result<MakerDetail>> {
+            return kotlinx.coroutines.flow.flowOf(Result.failure(Exception("ネットワークエラーが発生しました")))
+        }
+
+        override fun getMakerVideos(makerCode: String): Flow<Result<List<MakerVideo>>> {
+            return kotlinx.coroutines.flow.flowOf(Result.failure(Exception("ネットワークエラーが発生しました")))
+        }
     }
 )
