@@ -100,4 +100,7 @@ dependencies {
 
     // Hilt Navigation Compose（重要！）
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Coil for image loading
+    implementation(libs.coil.compose)
 }
